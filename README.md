@@ -168,37 +168,6 @@ for _, video := range results.Videos {
 }
 ```
 
-## Installation
-
-Each package is a separate Go module. Install only what you need:
-
-```bash
-go get github.com/HandyGold75/GOLib/argp
-go get github.com/HandyGold75/GOLib/cfg
-go get github.com/HandyGold75/GOLib/gapo
-go get github.com/HandyGold75/GOLib/keyboard
-go get github.com/HandyGold75/GOLib/logger
-go get github.com/HandyGold75/GOLib/pbar
-go get github.com/HandyGold75/GOLib/scheduler
-go get github.com/HandyGold75/GOLib/tui
-go get github.com/HandyGold75/GOLib/yts
-```
-
-Or use the workspace:
-
-```bash
-go work use ./argp ./cfg ./gapo ./keyboard ./logger ./pbar ./scheduler ./tui ./yts
-```
-
-## Requirements
-
-- Go 1.22+
-- Linux (for `keyboard` package)
-
-## License
-
-MIT License - see [LICENSE](LICENSE) file
-
 ## Contributing
 
 Issues and pull requests are welcome. Please ensure:
