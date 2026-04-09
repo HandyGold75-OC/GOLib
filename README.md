@@ -168,9 +168,4 @@ for _, video := range results.Videos {
 }
 ```
 
-## Contributing
 
-Issues and pull requests are welcome. Please ensure:
-- Code follows existing style
-- Tests pass (if applicable)
-- Documentation is updated
