@@ -16,36 +16,36 @@ type (
 	Logger struct {
 		// When logging to file this file will be used.
 		//
-		// If `logger.DynamicFileName` is not nil this becomes the used path (.log Surfix is trimmed).
+		// If `logger.DynamicFileName` is not nil this becomes the used path (.log Suffix is trimmed).
 		FilePath string
-		// Append the return to `logger.FilePath` (.log Surfix is trimmed from `logger.FilePath`).
+		// Append the return to `logger.FilePath` (.log Suffix is trimmed from `logger.FilePath`).
 		DynamicFileName func() string
-		// Mapping of Vebosities to set allowed verbosities and their priority.
+		// Mapping of Verbosities to set allowed verbosities and their priority.
 		Verbosities map[string]int
-		// Mapping of Vebosities Colors to set their cli color.
+		// Mapping of Verbosities Colors to set their cli color.
 		VerbositiesColors map[string]Color
-		// Minimal verbose priotity to log message to CLI.
+		// Minimal verbose priority to log message to CLI.
 		VerboseToCLI int
-		// Minimal verbose priotity to log message to file.
+		// Minimal verbose priority to log message to file.
 		VerboseToFile int
 		// Prepend logs with the date time.
 		AppendDateTime bool
 		// Prepend logs with the verbosity.
 		AppendVerbosity bool
 		// Prepend logs with this.
-		PrepentCLI string
+		PrependCLI string
 		// Called after every log to CLI.
 		MessageCLIHook func(msg string)
 		// Minimal char count a log part will take up.
 		CharCountPerPart int
 		// Minimal char space the verbosity part will take up (AppendVerbosity must be true to take effect).
 		CharCountVerbosity int
-		// When true RecordSepperator and EORSepperator are used when loggin to file, otherwise log the raw message.
-		UseSeperators bool
-		// Seperator string between message parts when logging to file (Logged message can not contain this string).
-		RecordSepperator string
+		// When true RecordSeparator and EORSeparator are used when logging to file, otherwise log the raw message.
+		UseSeparators bool
+		// Separator string between message parts when logging to file (Logged message can not contain this string).
+		RecordSeparator string
 		// End of record string after a message when logging to file (Logged message can not contain this string).
-		EORSepperator string
+		EORSeparator string
 	}
 )
 
@@ -57,7 +57,7 @@ const (
 	Italic          Color = "\033[3m"
 	Underline       Color = "\033[4m"
 	StrikeTrough    Color = "\033[9m"
-	DubbleUnderline Color = "\033[21m"
+	DoubleUnderline Color = "\033[21m"
 
 	Black   Color = "\033[30m"
 	Red     Color = "\033[31m"
@@ -97,34 +97,34 @@ const (
 )
 
 var (
-	// Default value for `logger.DynamicFileName`, does not effect exisiting loggers.
+	// Default value for `logger.DynamicFileName`, does not effect existing loggers.
 	DynamicFileName func() string = nil
-	// Default value for `logger.Verbosities`, does not effect exisiting loggers.
+	// Default value for `logger.Verbosities`, does not effect existing loggers.
 	Verbosities = map[string]int{"high": 3, "medium": 2, "low": 1}
-	// Default value for `logger.VerbositiesColors`, does not effect exisiting loggers.
+	// Default value for `logger.VerbositiesColors`, does not effect existing loggers.
 	VerbositiesColors = map[string]Color{"high": Red, "low": BrightBlack}
-	// Default value for `logger.VerboseToCLI`, does not effect exisiting loggers.
+	// Default value for `logger.VerboseToCLI`, does not effect existing loggers.
 	VerboseToCLI = 1
-	// Default value for `logger.VerboseToFile`, does not effect exisiting loggers.
+	// Default value for `logger.VerboseToFile`, does not effect existing loggers.
 	VerboseToFile = 2
-	// Default value for `logger.AppendDateTime`, does not effect exisiting loggers.
+	// Default value for `logger.AppendDateTime`, does not effect existing loggers.
 	AppendDateTime = true
-	// Default value for `logger.AppendVerbosity`, does not effect exisiting loggers.
+	// Default value for `logger.AppendVerbosity`, does not effect existing loggers.
 	AppendVerbosity = true
-	// Default value for `logger.PrepentCLI`, does not effect exisiting loggers.
-	PrepentCLI = ""
-	// Default value for `logger.MessageCLIHook`, does not effect exisiting loggers.
+	// Default value for `logger.PrependCLI`, does not effect existing loggers.
+	PrependCLI = ""
+	// Default value for `logger.MessageCLIHook`, does not effect existing loggers.
 	MessageCLIHook func(msg string) = nil
-	// Default value for `logger.CharCountPerPart`, does not effect exisiting loggers.
+	// Default value for `logger.CharCountPerPart`, does not effect existing loggers.
 	CharCountPerPart = 32
-	// Default value for `logger.CharCountVerbosity`, does not effect exisiting loggers.
+	// Default value for `logger.CharCountVerbosity`, does not effect existing loggers.
 	CharCountVerbosity = 7
-	// Default value for `logger.UseSeperators`, does not effect exisiting loggers.
-	UseSeperators = true
-	// Default value for `logger.RecordSepperator`, does not effect exisiting loggers.
-	RecordSepperator = "<SEP>"
-	// Default value for `logger.EORSepperator`, does not effect exisiting loggers.
-	EORSepperator = "<EOR>\n"
+	// Default value for `logger.UseSeparators`, does not effect existing loggers.
+	UseSeparators = true
+	// Default value for `logger.RecordSeparator`, does not effect existing loggers.
+	RecordSeparator = "<SEP>"
+	// Default value for `logger.EORSeparator`, does not effect existing loggers.
+	EORSeparator = "<EOR>\n"
 )
 
 // Create new logger instance.
@@ -167,13 +167,13 @@ func NewAbs(file string) *Logger {
 		VerboseToFile:      VerboseToFile,
 		AppendDateTime:     AppendDateTime,
 		AppendVerbosity:    AppendVerbosity,
-		PrepentCLI:         PrepentCLI,
+		PrependCLI:         PrependCLI,
 		MessageCLIHook:     MessageCLIHook,
 		CharCountPerPart:   CharCountPerPart,
 		CharCountVerbosity: CharCountVerbosity,
-		UseSeperators:      UseSeperators,
-		RecordSepperator:   RecordSepperator,
-		EORSepperator:      EORSepperator,
+		UseSeparators:      UseSeparators,
+		RecordSeparator:    RecordSeparator,
+		EORSeparator:       EORSeparator,
 	}
 }
 
@@ -187,7 +187,7 @@ func (logger Logger) logToCLI(verbosity string, msgs ...any) {
 	if logger.AppendDateTime {
 		msg = "[" + time.Now().Format(time.DateTime) + "] " + msg
 	}
-	msg = logger.PrepentCLI + msg
+	msg = logger.PrependCLI + msg
 
 	col, ok := logger.VerbositiesColors[verbosity]
 	if ok {
@@ -208,18 +208,18 @@ func (logger Logger) logToCLI(verbosity string, msgs ...any) {
 func (logger Logger) logToFile(verbosity string, msgs ...any) {
 	var msg string
 
-	if logger.UseSeperators {
-		msg = fmt.Sprintf(strings.Repeat("%v"+logger.RecordSepperator, len(msgs)), msgs...)
+	if logger.UseSeparators {
+		msg = fmt.Sprintf(strings.Repeat("%v"+logger.RecordSeparator, len(msgs)), msgs...)
 
 		if logger.AppendVerbosity {
-			msg = verbosity + logger.RecordSepperator + msg
+			msg = verbosity + logger.RecordSeparator + msg
 		}
 		if logger.AppendDateTime {
-			msg = time.Now().Format(time.RFC3339Nano) + logger.RecordSepperator + msg
+			msg = time.Now().Format(time.RFC3339Nano) + logger.RecordSeparator + msg
 		}
 
-		i := strings.LastIndex(msg, logger.RecordSepperator)
-		msg = msg[:i] + strings.Replace(msg[i:], logger.RecordSepperator, "", 1) + logger.EORSepperator
+		i := strings.LastIndex(msg, logger.RecordSeparator)
+		msg = msg[:i] + strings.Replace(msg[i:], logger.RecordSeparator, "", 1) + logger.EORSeparator
 	} else {
 		msg = fmt.Sprintf(strings.Repeat("%-"+strconv.Itoa(logger.CharCountPerPart)+"v", len(msgs))+"\n", msgs...)
 
@@ -276,12 +276,12 @@ func (logger Logger) Log(verbosity string, msgs ...any) {
 
 	if verboseLevel >= logger.VerboseToFile {
 		for _, msg := range msgs {
-			if strings.Contains(fmt.Sprintf("%v", msg), logger.RecordSepperator) {
-				logger.logToCLI("ERROR", "Msg contains "+logger.RecordSepperator, msg)
+			if strings.Contains(fmt.Sprintf("%v", msg), logger.RecordSeparator) {
+				logger.logToCLI("ERROR", "Msg contains "+logger.RecordSeparator, msg)
 				return
 			}
-			if strings.Contains(fmt.Sprintf("%v", msg), logger.EORSepperator) {
-				logger.logToCLI("ERROR", "Msg contains "+strings.ReplaceAll(logger.EORSepperator, "\n", "\\n"), strings.ReplaceAll(msg.(string), "\n", "\\n"))
+			if strings.Contains(fmt.Sprintf("%v", msg), logger.EORSeparator) {
+				logger.logToCLI("ERROR", "Msg contains "+strings.ReplaceAll(logger.EORSeparator, "\n", "\\n"), strings.ReplaceAll(msg.(string), "\n", "\\n"))
 				return
 			}
 		}

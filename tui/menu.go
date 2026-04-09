@@ -13,9 +13,9 @@ import (
 type (
 	// The MenuItem interface is (part of) the Menu.
 	//
-	// The MenuItem is responseble for storing, modifing, reporting or executing values/ functions.
+	// The MenuItem is responsible for storing, modifying, reporting or executing values/ functions.
 	//
-	// Control may be taken over by a MenuItem altough it should always have a path to return control.
+	// Control may be taken over by a MenuItem although it should always have a path to return control.
 	MenuItem interface {
 		// Get the name of the item.
 		String() string
@@ -39,9 +39,9 @@ type (
 
 	// Menu is a MenuItem interface.
 	//
-	// The MenuItem is responseble for storing, modifing, reporting or executing values/ functions.
+	// The MenuItem is responsible for storing, modifying, reporting or executing values/ functions.
 	//
-	// Control may be taken over by a MenuItem altough it should always have a path to return control.
+	// Control may be taken over by a MenuItem although it should always have a path to return control.
 	Menu struct {
 		mm          *MainMenu
 		name        string
@@ -546,22 +546,22 @@ func (p *ipv4) Enter() error {
 
 // Add a new ipv6 to `m.Items`.
 //
-// `value` must be a valid IPv4 address.
+// `value` must be a valid IPv6 address.
 //
 // Returns a pointer to the new list.
 func (m *Menu) NewIPv6(name string, value string) *ipv6 {
-	ip4 := &ipv6{
+	ip6 := &ipv6{
 		mm:       m.mm,
 		name:     name,
 		value:    net.ParseIP(value).To16(),
 		selected: 0,
 		editing:  false,
 	}
-	if ip4.value == nil {
-		ip4.value = net.ParseIP("::").To16()
+	if ip6.value == nil {
+		ip6.value = net.ParseIP("::").To16()
 	}
-	m.Items = append(m.Items, ip4)
-	return ip4
+	m.Items = append(m.Items, ip6)
+	return ip6
 }
 
 func (p *ipv6) String() string { return p.name }

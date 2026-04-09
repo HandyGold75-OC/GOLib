@@ -20,7 +20,7 @@ type (
 	keybinds struct{ Up, Down, Right, Left, Exit, Numbers, Confirm, Delete []keybind }
 	keybind  []byte
 
-	// The MainMenu is responseble for creating and managing MenuItems.
+	// The MainMenu is responsible for creating and managing MenuItems.
 	//
 	// The first MenuItem is always a plain Menu.
 	//
@@ -43,7 +43,7 @@ const (
 	Italic          color = "\033[3m"
 	Underline       color = "\033[4m"
 	StrikeTrough    color = "\033[9m"
-	DubbleUnderline color = "\033[21m"
+	DoubleUnderline color = "\033[21m"
 
 	Black   color = "\033[30m"
 	Red     color = "\033[31m"

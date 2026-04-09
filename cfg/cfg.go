@@ -40,14 +40,14 @@ func LoadAbs(file string, data any) error {
 	bytes, err := os.ReadFile(file)
 	if os.IsNotExist(err) || len(bytes) == 0 {
 		fileSplit := strings.Split(strings.ReplaceAll(file, "\\", "/"), "/")
-		if err := os.MkdirAll(strings.Join(fileSplit[:len(fileSplit)-1], "/"), os.ModePerm); err != nil {
+		if err := os.MkdirAll(strings.Join(fileSplit[:len(fileSplit)-1], "/"), 0755); err != nil {
 			return err
 		}
 		bytes, err = json.MarshalIndent(data, "", "\t")
 		if err != nil {
 			return err
 		}
-		if err = os.WriteFile(file, bytes, os.ModePerm); err != nil {
+		if err = os.WriteFile(file, bytes, 0640); err != nil {
 			return err
 		}
 	} else if err != nil {
@@ -97,15 +97,15 @@ func DumpAbs(file string, data any) error {
 		return err
 	}
 
-	if err = os.WriteFile(file, bytes, os.ModePerm); err != nil {
+	if err = os.WriteFile(file, bytes, 0640); err != nil {
 		if !os.IsNotExist(err) {
 			return err
 		}
 		fileSplit := strings.Split(strings.ReplaceAll(file, "\\", "/"), "/")
-		if err := os.MkdirAll(strings.Join(fileSplit[:len(fileSplit)-1], "/"), os.ModePerm); err != nil {
+		if err := os.MkdirAll(strings.Join(fileSplit[:len(fileSplit)-1], "/"), 0755); err != nil {
 			return err
 		}
-		if err = os.WriteFile(file, bytes, os.ModePerm); err != nil {
+		if err = os.WriteFile(file, bytes, 0640); err != nil {
 			return err
 		}
 	}

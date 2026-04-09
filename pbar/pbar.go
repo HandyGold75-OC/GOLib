@@ -8,29 +8,40 @@ import (
 	"golang.org/x/term"
 )
 
-var (
+// PBar is a progress bar instance.
+type PBar struct {
 	// Completed actions.
-	Done = 0
+	Done int
 
 	// Total actions.
-	Total = 0
+	Total int
 
 	// Size multiplier (0.0 - 1.0).
-	Size = 0.25
+	Size float64
 
 	// Verbosity.
-	Verbose = 0
-)
+	Verbose int
+}
+
+// NewPBar creates a new progress bar instance with default values.
+func NewPBar() *PBar {
+	return &PBar{
+		Done:    0,
+		Total:   0,
+		Size:    0.25,
+		Verbose: 0,
+	}
+}
 
 // Log progress bar.
-func Log() {
+func (pb *PBar) Log() {
 	prog := 0.0
-	if Total != 0 {
-		prog = float64(Done) / float64(max(0, Total))
+	if pb.Total != 0 {
+		prog = float64(pb.Done) / float64(max(0, pb.Total))
 	}
 
 	width, _, _ := term.GetSize(0)
-	progLen := float64(prog) * float64(width) * min(1.0, max(0.0, Size))
+	progLen := float64(prog) * float64(width) * min(1.0, max(0.0, pb.Size))
 
 	lastChar := "█"
 	switch i := progLen - float64(int(progLen)); {
@@ -42,7 +53,7 @@ func Log() {
 		lastChar += "▀"
 	}
 
-	msg := fmt.Sprintf("\r|%-"+strconv.Itoa(int(float64(width)/4)+1)+"v| %.1f%%", strings.Repeat("█", int(progLen))+lastChar, prog*100)
+	msg := fmt.Sprintf("\r|%--"+strconv.Itoa(int(float64(width)/4)+1)+"v| %.1f%%", strings.Repeat("█", int(progLen))+lastChar, prog*100)
 
 	fmt.Printf("\r%"+strconv.Itoa(width)+"v", "")
 	if len([]rune(msg)) > width {
@@ -52,34 +63,40 @@ func Log() {
 	}
 }
 
-// Short for `pbar.Done += 1; pbar.Log()`.
-func Next(msg string, format string, v ...any) { Done += 1; Log() }
+// Next increments Done by 1 and logs the progress bar.
+func (pb *PBar) Next(msg string, format string, v ...any) {
+	pb.Done += 1
+	pb.Log()
+}
 
-// Short for `pbar.Done -= 1; pbar.Log()`.
-func Back() { Done -= 1; Log() }
+// Back decrements Done by 1 and logs the progress bar.
+func (pb *PBar) Back() {
+	pb.Done -= 1
+	pb.Log()
+}
 
-// Log progress bar with message capabilities.
+// LogMsg logs progress bar with message capabilities.
 //
-// `msg`, `format` and `v` may be ignored based on `pbar.Verbose`.
+// `msg` and `msgLong` may be ignored based on `pb.Verbose`.
 //
-// Verbosities
+// Verbosities:
 //
 //	<= 0: Plain progress bar.
 //	== 1: `msg` is appended to the progress bar.
 //	>= 2: Progress bar is discarded, `msgLong` is forwarded to `fmt.Print`.
-func LogMsg(msg string, msgLong string) {
-	if Verbose >= 2 {
+func (pb *PBar) LogMsg(msg string, msgLong string) {
+	if pb.Verbose >= 2 {
 		fmt.Print(msgLong)
 		return
 	}
 
 	prog := 0.0
-	if Total != 0 {
-		prog = float64(Done) / float64(max(0, Total))
+	if pb.Total != 0 {
+		prog = float64(pb.Done) / float64(max(0, pb.Total))
 	}
 
 	width, _, _ := term.GetSize(0)
-	progLen := float64(prog) * float64(width) * min(1.0, max(0.0, Size))
+	progLen := float64(prog) * float64(width) * min(1.0, max(0.0, pb.Size))
 
 	lastChar := "█"
 	switch i := progLen - float64(int(progLen)); {
@@ -91,10 +108,10 @@ func LogMsg(msg string, msgLong string) {
 		lastChar += "▀"
 	}
 
-	if Verbose >= 1 {
-		msg = fmt.Sprintf("\r|%-"+strconv.Itoa(int(float64(width)/4)+1)+"v| %.1f%% (%v/%v) -> %v", strings.Repeat("█", int(progLen))+lastChar, prog*100, Done, Total, msg)
+	if pb.Verbose >= 1 {
+		msg = fmt.Sprintf("\r|%--"+strconv.Itoa(int(float64(width)/4)+1)+"v| %.1f%% (%v/%v) -> %v", strings.Repeat("█", int(progLen))+lastChar, prog*100, pb.Done, pb.Total, msg)
 	} else {
-		msg = fmt.Sprintf("\r|%-"+strconv.Itoa(int(float64(width)/4)+1)+"v| %.1f%%", strings.Repeat("█", int(progLen))+lastChar, prog*100)
+		msg = fmt.Sprintf("\r|%--"+strconv.Itoa(int(float64(width)/4)+1)+"v| %.1f%%", strings.Repeat("█", int(progLen))+lastChar, prog*100)
 	}
 
 	fmt.Printf("\r%"+strconv.Itoa(width)+"v", "")
@@ -105,8 +122,14 @@ func LogMsg(msg string, msgLong string) {
 	}
 }
 
-// Short for `pbar.Done += 1; pbar.LogMsg(msg, msgLong)`.
-func NextMsg(msg string, msgLong string) { Done += 1; LogMsg(msg, msgLong) }
+// NextMsg increments Done by 1 and logs the progress bar with message.
+func (pb *PBar) NextMsg(msg string, msgLong string) {
+	pb.Done += 1
+	pb.LogMsg(msg, msgLong)
+}
 
-// Short for `pbar.Done -= 1; pbar.LogMsg(msg, msgLong)`.
-func BackMsg(msg string, msgLong string) { Done -= 1; LogMsg(msg, msgLong) }
+// BackMsg decrements Done by 1 and logs the progress bar with message.
+func (pb *PBar) BackMsg(msg string, msgLong string) {
+	pb.Done -= 1
+	pb.LogMsg(msg, msgLong)
+}
