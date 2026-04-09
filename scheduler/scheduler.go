@@ -212,7 +212,7 @@ func SleepUntil(msg string, t time.Time, interval time.Duration) {
 
 // Sleep for a minimum of `dur`.
 //
-// Call `f` every `interval`, time remaining is passsed to `f`.
+// Call `f` every `interval`, time remaining is passed to `f`.
 // If `f` returns false, the `SleepForFunc` returns early.
 func SleepForFunc(f func(time.Duration) bool, dur time.Duration, interval time.Duration) {
 	endTime := time.Now().Add(dur)

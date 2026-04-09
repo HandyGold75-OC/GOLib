@@ -14,7 +14,7 @@ import (
 type (
 	// The Renderer interface may be parsed to a MainMenu to be used as Renderer.
 	//
-	// The MainMenu is reponsible for all logic while the Renderer is responseble for visializing the MainMenu.
+	// The MainMenu is responsible for all logic while the Renderer is responsible for visualizing the MainMenu.
 	//
 	// The MainMenu should always call HookMainMenu first to allow the Renderer to hook into the MainMenu.
 	Renderer interface {

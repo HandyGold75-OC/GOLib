@@ -13,9 +13,9 @@ import (
 type (
 	// The MenuItem interface is (part of) the Menu.
 	//
-	// The MenuItem is responseble for storing, modifing, reporting or executing values/ functions.
+	// The MenuItem is responsible for storing, modifying, reporting or executing values/ functions.
 	//
-	// Control may be taken over by a MenuItem altough it should always have a path to return control.
+	// Control may be taken over by a MenuItem although it should always have a path to return control.
 	MenuItem interface {
 		// Get the name of the item.
 		String() string
@@ -39,9 +39,9 @@ type (
 
 	// Menu is a MenuItem interface.
 	//
-	// The MenuItem is responseble for storing, modifing, reporting or executing values/ functions.
+	// The MenuItem is responsible for storing, modifying, reporting or executing values/ functions.
 	//
-	// Control may be taken over by a MenuItem altough it should always have a path to return control.
+	// Control may be taken over by a MenuItem although it should always have a path to return control.
 	Menu struct {
 		mm          *MainMenu
 		name        string
