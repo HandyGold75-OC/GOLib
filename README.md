@@ -16,7 +16,7 @@ args := argp.ParseArgs(struct {
     Name   string   `switch:"n,-name" opts:"required" help:"Your name"`
     Count  int      `switch:"c,-count" default:"1" help:"Repeat count"`
     Verbose bool    `switch:"v,-verbose" help:"Enable verbose output"`
-})
+}{})
 ```
 
 ### `cfg`
@@ -49,12 +49,7 @@ if err != nil {
     log.Fatal(err)
 }
 
-// Turn device on
-device.On()
-
-// Get device info
 info, _ := device.GetDeviceInfo()
-fmt.Printf("Device: %s, On: %v\n", info.Nickname, info.DeviceOn)
 ```
 
 ### `keyboard`
@@ -100,10 +95,14 @@ Progress bar for CLI applications with multiple verbosity modes.
 ```go
 import "github.com/HandyGold75/GOLib/pbar"
 
-pbar.Total = 100
+pb := pbar.NewPBar()
+pb.Total = 100
+
+fmt.Println("Processing...")
+
 for i := 0; i < 100; i++ {
-    pbar.Next("", "")
-    time.Sleep(10 * time.Millisecond)
+    pb.Next("", "")
+    time.Sleep(50 * time.Millisecond)
 }
 ```
 
